@@ -1,5 +1,6 @@
 var request = require('superagent')
 
+
 $(document).ready(function() {
 
   //Tells jquery to wait until dom has loaded before loading jquery
@@ -23,7 +24,7 @@ function renderMovieResults(movies) {
   for (var i = 0; i < movies.length; i++) {
 
     console.log(movies[i].title)
-    $("#results").append("<div class='posters'><h3> " + movies[i].title + "</h3><br>" + "<img src='https://image.tmdb.org/t/p/w185/" + movies[i].poster_path +"'> <br></div>")
+    $("#results").append("<div class='posters animated rollIn'><h3> " + movies[i].title + "</h3><br>" + "<img src='https://image.tmdb.org/t/p/w185/" + movies[i].poster_path +"'> <br></div>")
 
   }
 
