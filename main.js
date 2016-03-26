@@ -9,19 +9,18 @@ $(document).ready(function() {
     var rawInput = $("#searchInput").val().toString();
     getMovieByActor(rawInput, function(err, data){
 
-
-
       try{
-        renderMovieResults(movies)
         var movies = data.body.results[0].known_for
+        renderMovieResults(movies)
+
       }
       catch (e){
-        $("#results").append("Sorry, we could not find the actor you search for!")
-        location.reload()
+        $("#results").html("Sorry, we could not find the actor you search for!")
       }
 
     })
   })
+})
 })
 
 function renderMovieResults(movies) {
