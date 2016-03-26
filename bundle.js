@@ -1,59 +1,63 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var request = require('superagent')
 
+
 $(document).ready(function() {
 
   //Tells jquery to wait until dom has loaded before loading jquery
-  var inputData = $("#button").click(function() {
+  $("#button").click(searchActor)
+  $("#searchInput").on("keydown",function(e) {
+    if (e.keyCode === 13){
+      searchActor()
+    }
+  })
 
+  function searchActor() {
     var rawInput = $("#searchInput").val().toString();
     getMovieByActor(rawInput, function(err, data){
-
-      var movies = data.body.results[0].known_for
-      renderMovieResults(movies)
+      if (data.body.results.length > 0) {
+        var movies = data.body.results[0].known_for
+        renderMovieResults(movies)
+        renderActor(data.body.results[0])
+      } else {
+        $("#face").html("")
+        $("#results").html("<br>Sorry, we could not find the actor you search for!")
+      }
 
     })
-  })
-})
-
-function renderMovieResults(movies) {
-  console.log(document)
-  document.getElementById('results').innerHTML = ""
-
-
-  for (var i = 0; i < movies.length; i++) {
-
-    console.log(movies[i].title)
-    $("#results").append("<div class='posters'><h3> " + movies[i].title + "</h3><br>" + "<img src='https://image.tmdb.org/t/p/w185/" + movies[i].poster_path +"'> <br></div>")
-
   }
 
+  function renderMovieResults(movies) {
 
-}
+    document.getElementById('results').innerHTML = ""
+    //create outer div with an animation
+    for (var i = 0; i < movies.length; i++) {
+      var movieResult = document.createElement('div')
+      movieResult.className = 'posters animated fadeInDown'
+      movieResult.innerHTML = "<h3>" + movies[i].title + "</h3><br>" + "<img src='https://image.tmdb.org/t/p/w185/" + movies[i].poster_path +"'><br>"
+      document.getElementById('results').appendChild(movieResult)
+    }
+  }
 
-function getMovieByActor(name, callback){
+  function renderActor(actor) {
+    document.getElementById('face').className = "animated fadeIn"
+    document.getElementById('face').innerHTML = "<h3>" + actor.name + "</h3><br>" + "<img src='https://image.tmdb.org/t/p/w185/" + actor.profile_path +"'><br>"
+  }
 
-  name = escape(name)
-  console.log(name)
-  request.get("http://api.themoviedb.org/3/search/person?api_key=da40aaeca884d8c9a9a4c088917c474c&query=" + name)
-    .set('Accept', 'application/json')
-    .end(function(err, res){
-      if (err) {
-        callback(err)
-        return
-      }
-      callback(null, res)
+  function getMovieByActor(name, callback){
+    name = escape(name)
+    request.get("http://api.themoviedb.org/3/search/person?api_key=da40aaeca884d8c9a9a4c088917c474c&query=" + name)
+      .set('Accept', 'application/json')
+      .end(function(err, res){
+        if (err) {
+          callback(err)
+          return
+        }
+        callback(null, res)
     })
 
-}
-
-
-
-  document.addEventListener('DOMContentLoaded', function() {
-
-
+  }
 })
-
 
 },{"superagent":4}],2:[function(require,module,exports){
 

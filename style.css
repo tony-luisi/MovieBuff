@@ -3,9 +3,16 @@
 html{
   background: rgb(66, 66, 186);
   color: white;
-
-
+  max-width: 100%;
+  max-height: 100%;
+  font-family:'Roboto', sans-serif;
 }
+
+p{
+  font-weight: 300;
+  color: #FFD700;
+}
+
 #container{
   margin: 0 auto;
   text-align: center;
@@ -21,6 +28,8 @@ html{
 #searchInput{
   width: 600px;
   height: 60px;
+  max-width: 100%;
+  max-height: 100%;
     font-family:'Roboto', sans-serif;
 
   font-weight: 900;
@@ -43,14 +52,10 @@ html{
   width: 100%;
     font-family:'Roboto', sans-serif;
     font-weight: 400;
+    color: #FFD700;
 }
 
-.poster{
-  float: left;
-  display:block ;
+.posters{
+  display: inline-block;
+  padding: 100px;
 }
-
-
-
-
-
