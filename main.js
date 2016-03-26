@@ -9,25 +9,31 @@ $(document).ready(function() {
     var rawInput = $("#searchInput").val().toString();
     getMovieByActor(rawInput, function(err, data){
 
-      var movies = data.body.results[0].known_for
-      renderMovieResults(movies)
+      try{
+        var movies = data.body.results[0].known_for
+        renderMovieResults(movies)
+
+      }
+      catch (e){
+        $("#results").html("Sorry, we could not find the actor you search for!")
+      }
 
     })
   })
+})
 })
 
 function renderMovieResults(movies) {
   console.log(document)
   document.getElementById('results').innerHTML = ""
 
-
+  //create outer div with an animation
   for (var i = 0; i < movies.length; i++) {
-
-    console.log(movies[i].title)
-    $("#results").append("<div class='posters animated rollIn'><h3> " + movies[i].title + "</h3><br>" + "<img src='https://image.tmdb.org/t/p/w185/" + movies[i].poster_path +"'> <br></div>")
-
+    var movieResult = document.createElement('div')
+    movieResult.className = 'posters animated rollIn'
+    movieResult.innerHTML = "<h3>" + movies[i].title + "</h3><br>" + "<img src='https://image.tmdb.org/t/p/w185/" + movies[i].poster_path +"'><br>"
+    document.getElementById('results').appendChild(movieResult)
   }
-
 
 }
 
@@ -46,11 +52,3 @@ function getMovieByActor(name, callback){
     })
 
 }
-
-
-
-  document.addEventListener('DOMContentLoaded', function() {
-
-
-})
-

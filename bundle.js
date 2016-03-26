@@ -1,6 +1,7 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var request = require('superagent')
 
+
 $(document).ready(function() {
 
   //Tells jquery to wait until dom has loaded before loading jquery
@@ -9,8 +10,14 @@ $(document).ready(function() {
     var rawInput = $("#searchInput").val().toString();
     getMovieByActor(rawInput, function(err, data){
 
-      var movies = data.body.results[0].known_for
-      renderMovieResults(movies)
+      try{
+        var movies = data.body.results[0].known_for
+        renderMovieResults(movies)
+
+      }
+      catch (e){
+        $("#results").html("Sorry, we could not find the actor you search for!")
+      }
 
     })
   })
@@ -20,14 +27,13 @@ function renderMovieResults(movies) {
   console.log(document)
   document.getElementById('results').innerHTML = ""
 
-
+  //create outer div with an animation
   for (var i = 0; i < movies.length; i++) {
-
-    console.log(movies[i].title)
-    $("#results").append("<div class='posters'><h3> " + movies[i].title + "</h3><br>" + "<img src='https://image.tmdb.org/t/p/w185/" + movies[i].poster_path +"'> <br></div>")
-
+    var movieResult = document.createElement('div')
+    movieResult.className = 'posters animated rollIn'
+    movieResult.innerHTML = "<h3>" + movies[i].title + "</h3><br>" + "<img src='https://image.tmdb.org/t/p/w185/" + movies[i].poster_path +"'><br>"
+    document.getElementById('results').appendChild(movieResult)
   }
-
 
 }
 
@@ -46,14 +52,6 @@ function getMovieByActor(name, callback){
     })
 
 }
-
-
-
-  document.addEventListener('DOMContentLoaded', function() {
-
-
-})
-
 
 },{"superagent":4}],2:[function(require,module,exports){
 
@@ -230,7 +228,7 @@ Emitter.prototype.hasListeners = function(event){
  * TODO: combatible error handling?
  */
 
-module.exports = function(arr, fn, initial){  
+module.exports = function(arr, fn, initial){
   var idx = 0;
   var len = arr.length;
   var curr = arguments.length == 3
@@ -240,7 +238,7 @@ module.exports = function(arr, fn, initial){
   while (idx < len) {
     curr = fn.call(null, curr, arr[idx], ++idx, arr);
   }
-  
+
   return curr;
 };
 },{}],4:[function(require,module,exports){
@@ -827,7 +825,7 @@ Request.prototype.type = function(type){
 };
 
 /**
- * Set responseType to `val`. Presently valid responseTypes are 'blob' and 
+ * Set responseType to `val`. Presently valid responseTypes are 'blob' and
  * 'arraybuffer'.
  *
  * Examples:
