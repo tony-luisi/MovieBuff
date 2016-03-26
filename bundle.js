@@ -10,8 +10,14 @@ $(document).ready(function() {
     var rawInput = $("#searchInput").val().toString();
     getMovieByActor(rawInput, function(err, data){
 
-      var movies = data.body.results[0].known_for
-      renderMovieResults(movies)
+      try{
+        var movies = data.body.results[0].known_for
+        renderMovieResults(movies)
+
+      }
+      catch (e){
+        $("#results").html("Sorry, we could not find the actor you search for!")
+      }
 
     })
   })
@@ -222,7 +228,7 @@ Emitter.prototype.hasListeners = function(event){
  * TODO: combatible error handling?
  */
 
-module.exports = function(arr, fn, initial){  
+module.exports = function(arr, fn, initial){
   var idx = 0;
   var len = arr.length;
   var curr = arguments.length == 3
@@ -232,7 +238,7 @@ module.exports = function(arr, fn, initial){
   while (idx < len) {
     curr = fn.call(null, curr, arr[idx], ++idx, arr);
   }
-  
+
   return curr;
 };
 },{}],4:[function(require,module,exports){
@@ -819,7 +825,7 @@ Request.prototype.type = function(type){
 };
 
 /**
- * Set responseType to `val`. Presently valid responseTypes are 'blob' and 
+ * Set responseType to `val`. Presently valid responseTypes are 'blob' and
  * 'arraybuffer'.
  *
  * Examples:
