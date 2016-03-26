@@ -10,48 +10,57 @@ $(document).ready(function() {
     var rawInput = $("#searchInput").val().toString();
     getMovieByActor(rawInput, function(err, data){
 
-      try{
+
+      if (data.body.results.length > 0) {
         var movies = data.body.results[0].known_for
         renderMovieResults(movies)
-
-      }
-      catch (e){
-        $("#results").html("Sorry, we could not find the actor you search for!")
+        console.log(data.body.results[0].id)
+        console.log(data.body.results[0])
+        renderActor(data.body.results[0])
+      } else {
+        $("#results").html("<br>Sorry, we could not find the actor you search for!")
       }
 
     })
   })
-})
 
-function renderMovieResults(movies) {
-  console.log(document)
-  document.getElementById('results').innerHTML = ""
+  function renderMovieResults(movies) {
+    document.getElementById('results').innerHTML = ""
 
-  //create outer div with an animation
-  for (var i = 0; i < movies.length; i++) {
-    var movieResult = document.createElement('div')
-    movieResult.className = 'posters animated rollIn'
-    movieResult.innerHTML = "<h3>" + movies[i].title + "</h3><br>" + "<img src='https://image.tmdb.org/t/p/w185/" + movies[i].poster_path +"'><br>"
-    document.getElementById('results').appendChild(movieResult)
+    //create outer div with an animation
+    for (var i = 0; i < movies.length; i++) {
+      var movieResult = document.createElement('div')
+      movieResult.className = 'posters animated fadeInDown'
+      movieResult.innerHTML = "<h3>" + movies[i].title + "</h3><br>" + "<img src='https://image.tmdb.org/t/p/w185/" + movies[i].poster_path +"'><br>"
+      document.getElementById('results').appendChild(movieResult)
+    }
   }
 
-}
+  function renderActor(actor) {
 
-function getMovieByActor(name, callback){
+    document.getElementById('face').className = "animated fadeIn"
+    document.getElementById('face').innerHTML = "<h3>" + actor.name + "</h3><br>" + "<img src='https://image.tmdb.org/t/p/w185/" + actor.profile_path +"'><br>"
 
-  name = escape(name)
-  console.log(name)
-  request.get("http://api.themoviedb.org/3/search/person?api_key=da40aaeca884d8c9a9a4c088917c474c&query=" + name)
-    .set('Accept', 'application/json')
-    .end(function(err, res){
-      if (err) {
-        callback(err)
-        return
-      }
-      callback(null, res)
+
+  }
+
+  function getMovieByActor(name, callback){
+
+    name = escape(name)
+    console.log(name)
+    request.get("http://api.themoviedb.org/3/search/person?api_key=da40aaeca884d8c9a9a4c088917c474c&query=" + name)
+      .set('Accept', 'application/json')
+      .end(function(err, res){
+        if (err) {
+          callback(err)
+          return
+        }
+        callback(null, res)
     })
 
-}
+  }
+
+})
 
 },{"superagent":4}],2:[function(require,module,exports){
 
@@ -228,7 +237,7 @@ Emitter.prototype.hasListeners = function(event){
  * TODO: combatible error handling?
  */
 
-module.exports = function(arr, fn, initial){
+module.exports = function(arr, fn, initial){  
   var idx = 0;
   var len = arr.length;
   var curr = arguments.length == 3
@@ -238,7 +247,7 @@ module.exports = function(arr, fn, initial){
   while (idx < len) {
     curr = fn.call(null, curr, arr[idx], ++idx, arr);
   }
-
+  
   return curr;
 };
 },{}],4:[function(require,module,exports){
@@ -825,7 +834,7 @@ Request.prototype.type = function(type){
 };
 
 /**
- * Set responseType to `val`. Presently valid responseTypes are 'blob' and
+ * Set responseType to `val`. Presently valid responseTypes are 'blob' and 
  * 'arraybuffer'.
  *
  * Examples:

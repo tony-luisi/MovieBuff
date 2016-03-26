@@ -5,6 +5,7 @@ html{
   color: white;
   max-width: 100%;
   max-height: 100%;
+  font-family:'Roboto', sans-serif;
 }
 
 p{
@@ -58,8 +59,3 @@ p{
   display: inline-block;
   padding: 100px;
 }
-
-
-
-
-
