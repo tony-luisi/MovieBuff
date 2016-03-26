@@ -9,8 +9,16 @@ $(document).ready(function() {
     var rawInput = $("#searchInput").val().toString();
     getMovieByActor(rawInput, function(err, data){
 
-      var movies = data.body.results[0].known_for
-      renderMovieResults(movies)
+
+
+      try{
+        renderMovieResults(movies)
+        var movies = data.body.results[0].known_for
+      }
+      catch (e){
+        $("#results").append("Sorry, we could not find the actor you search for!")
+        location.reload()
+      }
 
     })
   })

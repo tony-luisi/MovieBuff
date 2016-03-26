@@ -3,9 +3,13 @@
 html{
   background: rgb(66, 66, 186);
   color: white;
-
-
 }
+
+p{
+  font-weight: 300;
+  color: #FFD700;
+}
+
 #container{
   margin: 0 auto;
   text-align: center;
@@ -43,6 +47,7 @@ html{
   width: 100%;
     font-family:'Roboto', sans-serif;
     font-weight: 400;
+    color: #FFD700;
 }
 
 .posters{
